@@ -5,7 +5,6 @@
  */
 package archivo;
 
-import com.sun.xml.internal.org.jvnet.fastinfoset.FastInfosetSerializer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,8 +13,6 @@ import javax.swing.*;
 import static javax.swing.JOptionPane.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,7 +30,7 @@ public class Formulario extends javax.swing.JFrame {
         ARCHIVOA = null;
         initComponents();
     }
-
+    int n = 0;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,16 +61,13 @@ public class Formulario extends javax.swing.JFrame {
         TABLA = new javax.swing.JTable();
         NARCHIVO = new javax.swing.JTextField();
         RUTA = new javax.swing.JLabel();
-        GUARDAR = new javax.swing.JButton();
         AGREGAR = new javax.swing.JButton();
+        ELIMINAR = new javax.swing.JButton();
+        ORDENARC = new javax.swing.JComboBox<>();
+        ORDENARB = new javax.swing.JButton();
         ABRIRARC = new javax.swing.JMenuBar();
-        SHORTCUT = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        ABRIRAGRE = new javax.swing.JMenuItem();
-        GUARDARB = new javax.swing.JMenuItem();
 
         AGREGARCOMP.setMinimumSize(new java.awt.Dimension(340, 310));
-        AGREGARCOMP.setPreferredSize(new java.awt.Dimension(340, 310));
         AGREGARCOMP.setSize(new java.awt.Dimension(340, 310));
 
         CODIGOA.setText("CODIGO: ");
@@ -215,13 +209,6 @@ public class Formulario extends javax.swing.JFrame {
 
         RUTA.setText("RUTA ARCHIVO: ");
 
-        GUARDAR.setText("GUARDAR");
-        GUARDAR.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GUARDARActionPerformed(evt);
-            }
-        });
-
         AGREGAR.setText("AGREGAR");
         AGREGAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -229,49 +216,36 @@ public class Formulario extends javax.swing.JFrame {
             }
         });
 
-        SHORTCUT.setText("Shortcut");
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem1.setText("ABRIR");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        ELIMINAR.setText("ELIMINAR");
+        ELIMINAR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                ELIMINARActionPerformed(evt);
             }
         });
-        SHORTCUT.add(jMenuItem1);
 
-        ABRIRAGRE.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK));
-        ABRIRAGRE.setText("ABRIR AGREGAR");
-        ABRIRAGRE.addActionListener(new java.awt.event.ActionListener() {
+        ORDENARC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CODIGO", "PROMEDIO" }));
+        ORDENARC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ABRIRAGREActionPerformed(evt);
+                ORDENARCActionPerformed(evt);
             }
         });
-        SHORTCUT.add(ABRIRAGRE);
 
-        GUARDARB.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_MASK));
-        GUARDARB.setText("GUARDAR");
-        GUARDARB.addActionListener(new java.awt.event.ActionListener() {
+        ORDENARB.setText("ORDENAR");
+        ORDENARB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GUARDARBActionPerformed(evt);
+                ORDENARBActionPerformed(evt);
             }
         });
-        SHORTCUT.add(GUARDARB);
-
-        ABRIRARC.add(SHORTCUT);
-
         setJMenuBar(ABRIRARC);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(NOMBRE)
@@ -282,14 +256,16 @@ public class Formulario extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(RUTAARCHIVO, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(BABRIR)))))
+                                .addComponent(BABRIR))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ORDENARB)
+                            .addComponent(ORDENARC, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ELIMINAR)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AGREGAR)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(GUARDAR)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(AGREGAR)
-                .addGap(53, 53, 53))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,12 +280,19 @@ public class Formulario extends javax.swing.JFrame {
                     .addComponent(NARCHIVO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(RUTA))
                 .addGap(13, 13, 13)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(GUARDAR)
-                    .addComponent(AGREGAR))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AGREGAR)
+                            .addComponent(ELIMINAR))
+                        .addGap(29, 29, 29))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(ORDENARC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ORDENARB)
+                        .addContainerGap())))
         );
 
         pack();
@@ -349,6 +332,8 @@ public class Formulario extends javax.swing.JFrame {
                     double PROMEDIO = Double.parseDouble(VLINEAS[2]);
                     
                     MODEL.addRow(new Object[]{CODIGO, Nombre, PROMEDIO});
+                    n++;
+                    
                 }
                 
                 scan.close();
@@ -364,19 +349,17 @@ public class Formulario extends javax.swing.JFrame {
         
     }//GEN-LAST:event_BABRIRActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        BABRIRActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void NARCHIVOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NARCHIVOActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_NARCHIVOActionPerformed
 
     private void AGREGARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AGREGARActionPerformed
+        
         AGREGARCOMP.setVisible(true);
         PROMEDIOT.setText("");
         NOMBRET.setText("");
         CODIGOT.setText("");
+        
     }//GEN-LAST:event_AGREGARActionPerformed
 
     private void AGREGARNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AGREGARNActionPerformed
@@ -388,14 +371,166 @@ public class Formulario extends javax.swing.JFrame {
             String nombre = NOMBRET.getText();
             double promedio = Double.parseDouble(PROMEDIOT.getText());
             MODEL.addRow(new Object[]{codigo, nombre, promedio});
+            GUARDAR();
+            n++;
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "HUBO UN ERROR AL AGREGAR LOS DATOS./nIntente nuevamente.", "ERROR", ERROR_MESSAGE);
         }
         
         AGREGARCOMP.setVisible(false);
+        
     }//GEN-LAST:event_AGREGARNActionPerformed
 
-    private void GUARDARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GUARDARActionPerformed
+    private void CANCELAR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELAR2ActionPerformed
+        AGREGARCOMP.setVisible(false);
+    }//GEN-LAST:event_CANCELAR2ActionPerformed
+
+    private void AGREGARCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AGREGARCTActionPerformed
+        AGREGARNActionPerformed(evt);
+    }//GEN-LAST:event_AGREGARCTActionPerformed
+
+    private void CANCELARAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELARAActionPerformed
+        CANCELAR2ActionPerformed(evt);
+    }//GEN-LAST:event_CANCELARAActionPerformed
+
+    private void ELIMINARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ELIMINARActionPerformed
+        
+        DefaultTableModel table = (DefaultTableModel)TABLA.getModel();
+        int indiceTabla = TABLA.getSelectedRow();
+        if (indiceTabla != -1) {
+            table.removeRow(indiceTabla);
+        }
+        GUARDAR();
+        
+    }//GEN-LAST:event_ELIMINARActionPerformed
+
+    private void ORDENARCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ORDENARCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ORDENARCActionPerformed
+
+    private void ORDENARBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ORDENARBActionPerformed
+
+        int TIPO = ORDENARC.getSelectedIndex(), conor = 0;
+        double[] ORDP = new double[n];
+        long[] ORDC = new long[n];
+        String[] ORDN = new String[n];
+        
+        if(TIPO == 0){
+            try {
+
+                Scanner scan = new Scanner(ARCHIVOA);
+
+                while(scan.hasNext()){
+
+                    String LINEA = scan.nextLine();
+                    String[] VLINEAS = LINEA.split(",");
+                    ORDC[conor] = Long.parseLong(VLINEAS[0]);           
+                    ORDN[conor] = VLINEAS[1];
+                    ORDP[conor] = Double.parseDouble(VLINEAS[2]);
+
+                    conor++;
+
+                }
+
+                scan.close();
+            } catch (FileNotFoundException ex) {
+
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if(i != j){
+                        if(ORDC[i] < ORDC[j]){
+                            long templ = ORDC[i];
+                            ORDC[i] = ORDC[j];
+                            ORDC[j] = templ;
+                            String temps = ORDN[i];
+                            ORDN[i] = ORDN[j];
+                            ORDN[j] = temps;
+                            double tempp = ORDP[i];
+                            ORDP[i] = ORDP[j];
+                            ORDP[j] = tempp;
+                        }
+                    }
+                }
+            }
+
+            try {
+                DefaultTableModel MODEL = (DefaultTableModel)TABLA.getModel();
+                for (int i = 0; i < n; i++) {
+
+                    long CODIGO = ORDC[i];
+                    String Nombre = ORDN[i];
+                    double PROMEDIO = ORDP[i];
+                    MODEL.setValueAt(CODIGO, i, 0);
+                    MODEL.setValueAt(Nombre, i, 1);
+                    MODEL.setValueAt(PROMEDIO, i, 2);
+
+                }
+
+            }catch(Exception e){
+
+            }
+        }else{
+            try {
+
+                Scanner scan = new Scanner(ARCHIVOA);
+
+                while(scan.hasNext()){
+
+                    String LINEA = scan.nextLine();
+                    String[] VLINEAS = LINEA.split(",");
+                    ORDC[conor] = Long.parseLong(VLINEAS[0]);           
+                    ORDN[conor] = VLINEAS[1];
+                    ORDP[conor] = Double.parseDouble(VLINEAS[2]);
+
+                    conor++;
+
+                }
+
+                scan.close();
+            } catch (FileNotFoundException ex) {
+
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if(i != j){
+                        if(ORDP[i] < ORDP[j]){
+                            long templ = ORDC[i];
+                            ORDC[i] = ORDC[j];
+                            ORDC[j] = templ;
+                            String temps = ORDN[i];
+                            ORDN[i] = ORDN[j];
+                            ORDN[j] = temps;
+                            double tempp = ORDP[i];
+                            ORDP[i] = ORDP[j];
+                            ORDP[j] = tempp;
+                        }
+                    }
+                }
+            }
+
+            try {
+                DefaultTableModel MODEL = (DefaultTableModel)TABLA.getModel();
+                for (int i = 0; i < n; i++) {
+
+                    long CODIGO = ORDC[i];
+                    String Nombre = ORDN[i];
+                    double PROMEDIO = ORDP[i];
+                    MODEL.setValueAt(CODIGO, i, 0);
+                    MODEL.setValueAt(Nombre, i, 1);
+                    MODEL.setValueAt(PROMEDIO, i, 2);
+
+                }
+
+            }catch(Exception e){
+
+            }
+        }
+        GUARDAR();
+    }//GEN-LAST:event_ORDENARBActionPerformed
+
+    public void GUARDAR(){
+        
         if(ARCHIVOA != null){
             try{
                 BufferedWriter BW = new BufferedWriter(new FileWriter(ARCHIVOA));
@@ -414,28 +549,9 @@ public class Formulario extends javax.swing.JFrame {
             
             }
         }
-    }//GEN-LAST:event_GUARDARActionPerformed
-
-    private void CANCELAR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELAR2ActionPerformed
-        AGREGARCOMP.setVisible(false);
-    }//GEN-LAST:event_CANCELAR2ActionPerformed
-
-    private void GUARDARBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GUARDARBActionPerformed
-        GUARDARActionPerformed(evt);
-    }//GEN-LAST:event_GUARDARBActionPerformed
-
-    private void ABRIRAGREActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ABRIRAGREActionPerformed
-        AGREGARActionPerformed(evt);
-    }//GEN-LAST:event_ABRIRAGREActionPerformed
-
-    private void AGREGARCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AGREGARCTActionPerformed
-        AGREGARNActionPerformed(evt);
-    }//GEN-LAST:event_AGREGARCTActionPerformed
-
-    private void CANCELARAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELARAActionPerformed
-        CANCELAR2ActionPerformed(evt);
-    }//GEN-LAST:event_CANCELARAActionPerformed
-
+        
+    }
+        
     /**
      * @param args the command line arguments
      */
@@ -472,7 +588,6 @@ public class Formulario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem ABRIRAGRE;
     private javax.swing.JMenuBar ABRIRARC;
     private javax.swing.JButton AGREGAR;
     private javax.swing.JFrame AGREGARCOMP;
@@ -485,20 +600,19 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JMenuItem CANCELARA;
     private javax.swing.JLabel CODIGOA;
     private javax.swing.JTextField CODIGOT;
-    private javax.swing.JButton GUARDAR;
-    private javax.swing.JMenuItem GUARDARB;
+    private javax.swing.JButton ELIMINAR;
     private javax.swing.JTextField NARCHIVO;
     private javax.swing.JLabel NOMBRE;
     private javax.swing.JLabel NOMBREA;
     private javax.swing.JTextField NOMBRET;
+    private javax.swing.JButton ORDENARB;
+    private javax.swing.JComboBox<String> ORDENARC;
     private javax.swing.JLabel PROMEDIOA;
     private javax.swing.JTextField PROMEDIOT;
     private javax.swing.JLabel RUTA;
     private javax.swing.JTextField RUTAARCHIVO;
     private javax.swing.JMenu SC2;
-    private javax.swing.JMenu SHORTCUT;
     private javax.swing.JTable TABLA;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
