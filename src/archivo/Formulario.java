@@ -414,28 +414,27 @@ public class Formulario extends javax.swing.JFrame {
         double[] ORDP = new double[n];
         long[] ORDC = new long[n];
         String[] ORDN = new String[n];
-        
-        if(TIPO == 0){
-            try {
+            
+        try {
+            Scanner scan = new Scanner(ARCHIVOA);
 
-                Scanner scan = new Scanner(ARCHIVOA);
+            while(scan.hasNext()){
 
-                while(scan.hasNext()){
+                String LINEA = scan.nextLine();
+                String[] VLINEAS = LINEA.split(",");
+                ORDC[conor] = Long.parseLong(VLINEAS[0]);           
+                ORDN[conor] = VLINEAS[1];
+                ORDP[conor] = Double.parseDouble(VLINEAS[2]);
 
-                    String LINEA = scan.nextLine();
-                    String[] VLINEAS = LINEA.split(",");
-                    ORDC[conor] = Long.parseLong(VLINEAS[0]);           
-                    ORDN[conor] = VLINEAS[1];
-                    ORDP[conor] = Double.parseDouble(VLINEAS[2]);
-
-                    conor++;
-
-                }
-
-                scan.close();
-            } catch (FileNotFoundException ex) {
+                conor++;
 
             }
+
+            scan.close();
+        } catch (FileNotFoundException ex) {
+
+        }
+        if(TIPO == 0){
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if(i != j){
@@ -454,43 +453,7 @@ public class Formulario extends javax.swing.JFrame {
                 }
             }
 
-            try {
-                DefaultTableModel MODEL = (DefaultTableModel)TABLA.getModel();
-                for (int i = 0; i < n; i++) {
-
-                    long CODIGO = ORDC[i];
-                    String Nombre = ORDN[i];
-                    double PROMEDIO = ORDP[i];
-                    MODEL.setValueAt(CODIGO, i, 0);
-                    MODEL.setValueAt(Nombre, i, 1);
-                    MODEL.setValueAt(PROMEDIO, i, 2);
-
-                }
-
-            }catch(Exception e){
-
-            }
         }else{
-            try {
-
-                Scanner scan = new Scanner(ARCHIVOA);
-
-                while(scan.hasNext()){
-
-                    String LINEA = scan.nextLine();
-                    String[] VLINEAS = LINEA.split(",");
-                    ORDC[conor] = Long.parseLong(VLINEAS[0]);           
-                    ORDN[conor] = VLINEAS[1];
-                    ORDP[conor] = Double.parseDouble(VLINEAS[2]);
-
-                    conor++;
-
-                }
-
-                scan.close();
-            } catch (FileNotFoundException ex) {
-
-            }
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if(i != j){
@@ -508,23 +471,22 @@ public class Formulario extends javax.swing.JFrame {
                     }
                 }
             }
+        }
+        try {
+            DefaultTableModel MODEL = (DefaultTableModel)TABLA.getModel();
+            for (int i = 0; i < n; i++) {
 
-            try {
-                DefaultTableModel MODEL = (DefaultTableModel)TABLA.getModel();
-                for (int i = 0; i < n; i++) {
-
-                    long CODIGO = ORDC[i];
-                    String Nombre = ORDN[i];
-                    double PROMEDIO = ORDP[i];
-                    MODEL.setValueAt(CODIGO, i, 0);
-                    MODEL.setValueAt(Nombre, i, 1);
-                    MODEL.setValueAt(PROMEDIO, i, 2);
-
-                }
-
-            }catch(Exception e){
+                long CODIGO = ORDC[i];
+                String Nombre = ORDN[i];
+                double PROMEDIO = ORDP[i];
+                MODEL.setValueAt(CODIGO, i, 0);
+                MODEL.setValueAt(Nombre, i, 1);
+                MODEL.setValueAt(PROMEDIO, i, 2);
 
             }
+
+        }catch(Exception e){
+
         }
         GUARDAR();
     }//GEN-LAST:event_ORDENARBActionPerformed
